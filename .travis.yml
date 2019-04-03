@@ -1,0 +1,14 @@
+language: shell
+
+matrix:
+  include:
+    - os: linux
+    - os: osx
+
+install: ci/install.sh
+
+script: ci/script.sh
+
+deploy:
+  provider: script
+  script: ci/deploy.sh
