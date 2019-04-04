@@ -6,8 +6,6 @@ set -o pipefail
 
 ## Linux stuff
 if [[ $TRAVIS_OS_NAME == 'linux' ]]; then
-    echo "Building Linux bundles ..."
-
     VERSION=1.0.0
     ICON=favicon-96x96.png
     REVIEW_URL=https://retest.de/review/review-${VERSION}.zip
@@ -15,17 +13,22 @@ if [[ $TRAVIS_OS_NAME == 'linux' ]]; then
     RUNTIME_URL=https://github.com/AdoptOpenJDK/openjdk11-binaries/releases/download/jdk-11.0.2%2B9/OpenJDK11U-jre_x64_linux_hotspot_11.0.2_9.tar.gz
     ICON_URL=https://retest.de/${ICON}
 
+    echo "Downloading build dependencies ..."
     curl --location ${JDK_URL} --output ${TRAVIS_BUILD_DIR}/jdk.tar.gz
     curl --location ${RUNTIME_URL} --output ${TRAVIS_BUILD_DIR}/runtime.tar.gz
     curl --location ${REVIEW_URL} --output ${TRAVIS_BUILD_DIR}/review.zip
     curl --location ${ICON_URL} --output ${TRAVIS_BUILD_DIR}/${ICON}
 
+    echo "Extracting build dependencies ..."
     tar xzf ${TRAVIS_BUILD_DIR}/jdk.tar.gz
     tar xzf ${TRAVIS_BUILD_DIR}/runtime.tar.gz
     unzip -q review.zip -d review
 
     touch review/COPYING
 
+    # export JAVA_HOME="${TRAVIS_BUILD_DIR}/zulu8.36.0.1-ca-fx-jdk8.0.202-linux_x64"
+
+    echo "Building Linux bundles ..."
     ${TRAVIS_BUILD_DIR}/zulu8.36.0.1-ca-fx-jdk8.0.202-linux_x64/bin/javapackager -deploy -native deb -Bicon=${TRAVIS_BUILD_DIR}/${ICON} -Bruntime=${TRAVIS_BUILD_DIR}/jdk-11.0.2+9-jre -BshortcutHint=true -Bvendor="ReTest GmbH" -Bcategory="Development" -Bcopyright="ReTest GmbH" -Bemail="ops@retest.de" -BjvmOptions="-XX:+HeapDumpOnOutOfMemoryError" -BjvmOptions="-XX:-OmitStackTraceInFastThrow" -BappVersion="1.0.0" -BlicenseType=Proprietary -BlicenseFile=COPYING -outdir ${TRAVIS_BUILD_DIR}/packages -outfile review -srcdir ${TRAVIS_BUILD_DIR}/review -srcfiles "review.jar" -srcfiles "review" -srcfiles "review.bat" -srcfiles "review.exe" -srcfiles "COPYING" -appclass de.retest.gui.ReTestGui -name "review" -title "review"
     ${TRAVIS_BUILD_DIR}/zulu8.36.0.1-ca-fx-jdk8.0.202-linux_x64/bin/javapackager -deploy -native rpm -Bicon=${TRAVIS_BUILD_DIR}/${ICON} -Bruntime=${TRAVIS_BUILD_DIR}/jdk-11.0.2+9-jre -BshortcutHint=true -Bvendor="ReTest GmbH" -Bcategory="Development" -Bcopyright="ReTest GmbH" -Bemail="ops@retest.de" -BjvmOptions="-XX:+HeapDumpOnOutOfMemoryError" -BjvmOptions="-XX:-OmitStackTraceInFastThrow" -BappVersion="1.0.0" -BlicenseType=Proprietary -BlicenseFile=COPYING -outdir ${TRAVIS_BUILD_DIR}/packages -outfile review -srcdir ${TRAVIS_BUILD_DIR}/review -srcfiles "review.jar" -srcfiles "review" -srcfiles "review.bat" -srcfiles "review.exe" -srcfiles "COPYING" -appclass de.retest.gui.ReTestGui -name "review" -title "review"
 fi

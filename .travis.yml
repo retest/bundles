@@ -1,6 +1,6 @@
 language: shell
 
-jdk: openjdk8
+jdk: openjdk11
 
 addons:
   apt:
@@ -11,7 +11,9 @@ addons:
 matrix:
   include:
     - os: linux
+      dist: xenial
     - os: osx
+      osx_image: xcode10.1
 
 install: ci/install.sh
 
