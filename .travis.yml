@@ -1,5 +1,7 @@
 language: shell
 
+jdk: openjdk8
+
 addons:
   apt:
     packages:
