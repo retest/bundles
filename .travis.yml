@@ -1,5 +1,11 @@
 language: shell
 
+addons:
+  apt:
+    packages:
+    - fakeroot
+    - rpm
+
 matrix:
   include:
     - os: linux
