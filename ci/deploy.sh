@@ -5,8 +5,6 @@ set -o errexit
 set -o pipefail
 
 BUCKET='DO:retest'
-SOURCE_PATH=${TRAVIS_BUILD_DIR}/packages
-TARGET_PATH='bundles'
 
 ## Linux stuff
 if [[ $TRAVIS_OS_NAME == 'linux' ]]; then
@@ -19,7 +17,8 @@ fi
 if [[ $TRAVIS_OS_NAME == 'osx' ]]; then
     echo "Deploying Mac bundles ..."
 
-    rclone copy ${SOURCE_PATH} ${BUCKET}/${TRAVIS_REPO_SLUG}/${TRAVIS_BUILD_NUMBER}/${TARGET_PATH}
+    rclone copy ${TRAVIS_BUILD_DIR}/packages/bundles/review.app ${BUCKET}/${TRAVIS_REPO_SLUG}/${TRAVIS_BUILD_NUMBER}/review.app
+    rclone copy ${TRAVIS_BUILD_DIR}/packages/bundles/review-1.0.0.dmg ${BUCKET}/${TRAVIS_REPO_SLUG}/${TRAVIS_BUILD_NUMBER}/review-1.0.0.dmg
 fi
 
 ## Windows stuff
