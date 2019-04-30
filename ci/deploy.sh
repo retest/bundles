@@ -18,8 +18,13 @@ if [[ $TRAVIS_OS_NAME == 'osx' ]]; then
     echo "Deploying Mac bundles ..."
 
     echo ${TRAVIS_BUILD_DIR}
-    rclone copy ${TRAVIS_BUILD_DIR}/packages/bundles ${BUCKET}/releases/review/bundles/${TRAVIS_BUILD_NUMBER}/
+    echo ${TRAVIS_BUILD_NUMBER}
+    
+    rclone copy ${TRAVIS_BUILD_DIR}/packages/bundles ${BUCKET}/releases/review/bundles/${TRAVIS_BUILD_NUMBER}
     # rclone copy /Users/travis/build/retest/bundles/packages/bundles/review-1.0.0.dmg ${BUCKET}/releases/review/bundles/${TRAVIS_BUILD_NUMBER}/
+
+    find ${TRAVIS_BUILD_DIR}/packages
+
 fi
 
 ## Windows stuff
