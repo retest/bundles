@@ -22,8 +22,6 @@ install_bundle_unix() {
     curl --location ${RUNTIME_URL} --output ${TRAVIS_BUILD_DIR}/runtime.tar.gz
     tar xzf ${TRAVIS_BUILD_DIR}/runtime.tar.gz
     mv ${TRAVIS_BUILD_DIR}/jdk-${RUNTIME_VERSION}+${RUNTIME_BUILD}-jre ${TRAVIS_BUILD_DIR}/runtime
-
-    find ${TRAVIS_BUILD_DIR}
 }
 
 install_rclone_unix() {

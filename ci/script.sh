@@ -18,8 +18,6 @@ if [[ $TRAVIS_OS_NAME == 'linux' ]]; then
     echo "Building Linux bundles ..."
     ${TRAVIS_BUILD_DIR}/zulufx/bin/javapackager -deploy -native deb -Bicon=${TRAVIS_BUILD_DIR}/${ICON} -Bruntime=${TRAVIS_BUILD_DIR}/runtime -BshortcutHint=true -Bvendor="ReTest GmbH" -Bcategory="Development" -Bcopyright="ReTest GmbH" -Bemail="ops@retest.de" -BjvmOptions="-XX:+HeapDumpOnOutOfMemoryError" -BjvmOptions="-XX:-OmitStackTraceInFastThrow" -BappVersion="1.0.0" -BlicenseType=Proprietary -BlicenseFile=COPYING -outdir ${TRAVIS_BUILD_DIR}/packages -outfile review -srcdir ${TRAVIS_BUILD_DIR}/review -srcfiles "review.jar" -srcfiles "review" -srcfiles "review.bat" -srcfiles "review.exe" -srcfiles "COPYING" -appclass de.retest.gui.ReTestGui -name "review" -title "review"
     ${TRAVIS_BUILD_DIR}/zulufx/bin/javapackager -deploy -native rpm -Bicon=${TRAVIS_BUILD_DIR}/${ICON} -Bruntime=${TRAVIS_BUILD_DIR}/runtime -BshortcutHint=true -Bvendor="ReTest GmbH" -Bcategory="Development" -Bcopyright="ReTest GmbH" -Bemail="ops@retest.de" -BjvmOptions="-XX:+HeapDumpOnOutOfMemoryError" -BjvmOptions="-XX:-OmitStackTraceInFastThrow" -BappVersion="1.0.0" -BlicenseType=Proprietary -BlicenseFile=COPYING -outdir ${TRAVIS_BUILD_DIR}/packages -outfile review -srcdir ${TRAVIS_BUILD_DIR}/review -srcfiles "review.jar" -srcfiles "review" -srcfiles "review.bat" -srcfiles "review.exe" -srcfiles "COPYING" -appclass de.retest.gui.ReTestGui -name "review" -title "review"
-
-    find ${TRAVIS_BUILD_DIR}
 fi
 
 ## OSX stuff
@@ -34,8 +32,6 @@ if [[ $TRAVIS_OS_NAME == 'osx' ]]; then
 
     ${TRAVIS_BUILD_DIR}/zulufx/bin/javapackager -deploy -native app -Bicon=${TRAVIS_BUILD_DIR}/${ICON} -Bruntime=${TRAVIS_BUILD_DIR}/runtime -BshortcutHint=true -Bvendor="ReTest GmbH" -Bcategory="Development" -Bcopyright="ReTest GmbH" -Bemail="ops@retest.de" -BjvmOptions="-XX:+HeapDumpOnOutOfMemoryError" -BjvmOptions="-XX:-OmitStackTraceInFastThrow" -BappVersion="${VERSION}" -BlicenseType=Proprietary -outdir ${TRAVIS_BUILD_DIR}/packages -outfile review -srcdir ${TRAVIS_BUILD_DIR}/review -srcfiles "review.jar" -srcfiles "review" -srcfiles "review.bat" -srcfiles "review.exe" -appclass de.retest.gui.ReTestGui -name "review" -title "review"
     ${TRAVIS_BUILD_DIR}/zulufx/bin/javapackager -deploy -native dmg -Bicon=${TRAVIS_BUILD_DIR}/${ICON} -Bruntime=${TRAVIS_BUILD_DIR}/runtime -BshortcutHint=true -Bvendor="ReTest GmbH" -Bcategory="Development" -Bcopyright="ReTest GmbH" -Bemail="ops@retest.de" -BjvmOptions="-XX:+HeapDumpOnOutOfMemoryError" -BjvmOptions="-XX:-OmitStackTraceInFastThrow" -BappVersion="${VERSION}" -BlicenseType=Proprietary -outdir ${TRAVIS_BUILD_DIR}/packages -outfile review -srcdir ${TRAVIS_BUILD_DIR}/review -srcfiles "review.jar" -srcfiles "review" -srcfiles "review.bat" -srcfiles "review.exe" -appclass de.retest.gui.ReTestGui -name "review" -title "review"
-
-    find ${TRAVIS_BUILD_DIR}
 fi
 
 ## Windows stuff
