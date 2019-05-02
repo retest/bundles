@@ -8,18 +8,15 @@ set -o pipefail
 if [[ $TRAVIS_OS_NAME == 'linux' ]]; then
     VERSION=1.0.0
     ICON=favicon-96x96.png
-    REVIEW_URL=https://retest.de/review/review-${VERSION}.zip
     JDK_URL=https://cdn.azul.com/zulu/bin/zulu8.36.0.1-ca-fx-jdk8.0.202-linux_x64.tar.gz
     ICON_URL=https://retest.de/${ICON}
 
     echo "Downloading build dependencies ..."
     curl --location ${JDK_URL} --output ${TRAVIS_BUILD_DIR}/jdk.tar.gz
-    curl --location ${REVIEW_URL} --output ${TRAVIS_BUILD_DIR}/review.zip
     curl --location ${ICON_URL} --output ${TRAVIS_BUILD_DIR}/${ICON}
 
     echo "Extracting build dependencies ..."
     tar xzf ${TRAVIS_BUILD_DIR}/jdk.tar.gz
-    unzip -q review.zip -d review
 
     touch review/COPYING
 
@@ -36,16 +33,13 @@ if [[ $TRAVIS_OS_NAME == 'osx' ]]; then
 
     VERSION=1.0.0
     ICON=favicon.icns
-    REVIEW_URL=https://retest.de/review/review-${VERSION}.zip
     JDK_URL=https://cdn.azul.com/zulu/bin/zulu8.36.0.1-ca-fx-jdk8.0.202-macosx_x64.tar.gz
     ICON_URL=https://retest.de/${ICON}
 
     curl --location ${JDK_URL} --output ${TRAVIS_BUILD_DIR}/jdk.tar.gz
-    curl --location ${REVIEW_URL} --output ${TRAVIS_BUILD_DIR}/review.zip
     curl --location ${ICON_URL} --output ${TRAVIS_BUILD_DIR}/${ICON}
 
     tar xzf ${TRAVIS_BUILD_DIR}/jdk.tar.gz
-    unzip -q review.zip -d review
 
     ${TRAVIS_BUILD_DIR}/zulu8.36.0.1-ca-fx-jdk8.0.202-macosx_x64/bin/javapackager -deploy -native app -Bicon=${TRAVIS_BUILD_DIR}/${ICON} -Bruntime=${TRAVIS_BUILD_DIR}/runtime -BshortcutHint=true -Bvendor="ReTest GmbH" -Bcategory="Development" -Bcopyright="ReTest GmbH" -Bemail="ops@retest.de" -BjvmOptions="-XX:+HeapDumpOnOutOfMemoryError" -BjvmOptions="-XX:-OmitStackTraceInFastThrow" -BappVersion="${VERSION}" -BlicenseType=Proprietary -outdir ${TRAVIS_BUILD_DIR}/packages -outfile review -srcdir ${TRAVIS_BUILD_DIR}/review -srcfiles "review.jar" -srcfiles "review" -srcfiles "review.bat" -srcfiles "review.exe" -appclass de.retest.gui.ReTestGui -name "review" -title "review"
     ${TRAVIS_BUILD_DIR}/zulu8.36.0.1-ca-fx-jdk8.0.202-macosx_x64/bin/javapackager -deploy -native dmg -Bicon=${TRAVIS_BUILD_DIR}/${ICON} -Bruntime=${TRAVIS_BUILD_DIR}/runtime -BshortcutHint=true -Bvendor="ReTest GmbH" -Bcategory="Development" -Bcopyright="ReTest GmbH" -Bemail="ops@retest.de" -BjvmOptions="-XX:+HeapDumpOnOutOfMemoryError" -BjvmOptions="-XX:-OmitStackTraceInFastThrow" -BappVersion="${VERSION}" -BlicenseType=Proprietary -outdir ${TRAVIS_BUILD_DIR}/packages -outfile review -srcdir ${TRAVIS_BUILD_DIR}/review -srcfiles "review.jar" -srcfiles "review" -srcfiles "review.bat" -srcfiles "review.exe" -appclass de.retest.gui.ReTestGui -name "review" -title "review"

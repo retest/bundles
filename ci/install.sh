@@ -7,6 +7,9 @@ RUNTIME_BUILD=7
 RUNTIME_VERSION="11.0.3"
 RUNTIME_BASE_URL="https://github.com/AdoptOpenJDK/openjdk11-binaries/releases/download/jdk-${RUNTIME_VERSION}%2B${RUNTIME_BUILD}"
 
+REVIEW_VERSION="1.0.0"
+REVIEW_URL=https://retest.de/review/review-${REVIEW_VERSION}.zip
+
 AZUL_BASE_URL="https://cdn.azul.com/zulu/bin/zulu8.36.0.1-ca-fx-jdk8.0.202-macosx_x64.tar.gz"
 
 install_bundle_unix() {
@@ -31,11 +34,18 @@ install_rclone_unix() {
     unzip -j -q "${RCLONE_ZIP}" "${RCLONE_FILE}/rclone" -d ${HOME}/bin/
 }
 
+install_review_unix() {
+    echo "Installing review ..."
+    curl --location ${REVIEW_URL} --output ${TRAVIS_BUILD_DIR}/review.zip
+    unzip -q review.zip -d review
+}
+
 ## Linux stuff
 if [[ ${TRAVIS_OS_NAME} == 'linux' ]]; then
     echo "Installing Linux dependencies ..."
     install_bundle_unix "OpenJDK11U-jre_x64_linux_hotspot_${RUNTIME_VERSION}_${RUNTIME_BUILD}.tar.gz"
     install_rclone_unix
+    install_review_unix
 fi
 
 ## OSX stuff
@@ -43,6 +53,7 @@ if [[ ${TRAVIS_OS_NAME} == 'osx' ]]; then
     echo "Installing Mac dependencies ..."
     install_bundle_unix "OpenJDK11U-jre_x64_mac_hotspot_${RUNTIME_VERSION}_${RUNTIME_BUILD}.tar.gz"
     install_rclone_unix
+    install_review_unix
 fi
 
 ## Windows stuff
