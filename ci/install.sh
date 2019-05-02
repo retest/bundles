@@ -10,7 +10,9 @@ RUNTIME_BASE_URL="https://github.com/AdoptOpenJDK/openjdk11-binaries/releases/do
 REVIEW_VERSION="1.0.0"
 REVIEW_URL=https://retest.de/review/review-${REVIEW_VERSION}.zip
 
-AZUL_BASE_URL="https://cdn.azul.com/zulu/bin/zulu8.36.0.1-ca-fx-jdk8.0.202-macosx_x64.tar.gz"
+ZULU_VERSION="8.36.0.1"
+ZULU_JDK_VERSION="8.0.202"
+ZULU_BASE_URL="https://cdn.azul.com/zulu/bin"
 
 install_bundle_unix() {
     echo "Installing bundle runtime ..."
@@ -40,10 +42,21 @@ install_review_unix() {
     unzip -q review.zip -d review
 }
 
+install_zulufx_unix() {
+    echo "Installing Azul ZuluFX ..."
+    ZULU_FILE=$1
+    ZULU_URL="${ZULU_BASE_URL}/${ZULU_FILE}.tar.gz"
+
+    curl --location ${ZULU_URL} --output ${TRAVIS_BUILD_DIR}/zulufx.tar.gz
+    tar xzf ${TRAVIS_BUILD_DIR}/zulufx.tar.gz
+    mv ${TRAVIS_BUILD_DIR}/${ZULU_FILE} ${TRAVIS_BUILD_DIR}/zulufx
+}
+
 ## Linux stuff
 if [[ ${TRAVIS_OS_NAME} == 'linux' ]]; then
     echo "Installing Linux dependencies ..."
     install_bundle_unix "OpenJDK11U-jre_x64_linux_hotspot_${RUNTIME_VERSION}_${RUNTIME_BUILD}.tar.gz"
+    install_zulufx_unix "zulu${ZULU_VERSION}-ca-fx-jdk${ZULU_JDK_VERSION}-linux_x64"
     install_rclone_unix
     install_review_unix
 fi
@@ -52,6 +65,7 @@ fi
 if [[ ${TRAVIS_OS_NAME} == 'osx' ]]; then
     echo "Installing Mac dependencies ..."
     install_bundle_unix "OpenJDK11U-jre_x64_mac_hotspot_${RUNTIME_VERSION}_${RUNTIME_BUILD}.tar.gz"
+    install_zulufx_unix "zulu${ZULU_VERSION}-ca-fx-jdk${ZULU_JDK_VERSION}-macosx_x64"
     install_rclone_unix
     install_review_unix
 fi
