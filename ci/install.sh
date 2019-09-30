@@ -8,7 +8,7 @@ RUNTIME_VERSION="11.0.3"
 RUNTIME_BASE_URL="https://github.com/AdoptOpenJDK/openjdk11-binaries/releases/download/jdk-${RUNTIME_VERSION}%2B${RUNTIME_BUILD}"
 
 REVIEW_VERSION="1.0.0"
-REVIEW_URL=https://retest.de/review/review-${REVIEW_VERSION}.zip
+REVIEW_URL=https://assets.retest.org/releases/review/review-${REVIEW_VERSION}.zip
 
 ZULU_VERSION="8.36.0.1"
 ZULU_JDK_VERSION="8.0.202"
