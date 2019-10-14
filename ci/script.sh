@@ -8,7 +8,7 @@ set -o pipefail
 if [[ $TRAVIS_OS_NAME == 'linux' ]]; then
     VERSION=1.0.0
     ICON=favicon-96x96.png
-    ICON_URL=https://retest.de/${ICON}
+    ICON_URL=https://assets.retest.org/assets/images/${ICON}
 
     echo "Downloading build dependencies ..."
     curl --location ${ICON_URL} --output ${TRAVIS_BUILD_DIR}/${ICON}
@@ -26,7 +26,7 @@ if [[ $TRAVIS_OS_NAME == 'osx' ]]; then
 
     VERSION=1.0.0
     ICON=favicon.icns
-    ICON_URL=https://retest.de/${ICON}
+    ICON_URL=https://assets.retest.org/assets/images/${ICON}
 
     curl --location ${ICON_URL} --output ${TRAVIS_BUILD_DIR}/${ICON}
 
