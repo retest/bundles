@@ -1,6 +1,6 @@
 language: shell
 
-jdk: openjdk11
+jdk: openjdk14
 
 addons:
   apt:

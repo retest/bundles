@@ -10,28 +10,43 @@ if [[ $TRAVIS_OS_NAME == 'linux' ]]; then
     ICON=favicon-96x96.png
     ICON_URL=https://assets.retest.org/assets/images/${ICON}
 
+    BUCKET='DO:retest'
+
     echo "Downloading build dependencies ..."
     curl --location ${ICON_URL} --output ${TRAVIS_BUILD_DIR}/${ICON}
 
-    touch review/COPYING
-
     echo "Building Linux bundles ..."
-    ${TRAVIS_BUILD_DIR}/zulufx/bin/javapackager -deploy -native deb -Bicon=${TRAVIS_BUILD_DIR}/${ICON} -Bruntime=${TRAVIS_BUILD_DIR}/runtime -BshortcutHint=true -Bvendor="ReTest GmbH" -Bcategory="Development" -Bcopyright="ReTest GmbH" -Bemail="ops@retest.de" -BjvmOptions="-XX:+HeapDumpOnOutOfMemoryError" -BjvmOptions="-XX:-OmitStackTraceInFastThrow" -BappVersion="1.0.0" -BlicenseType=Proprietary -BlicenseFile=COPYING -outdir ${TRAVIS_BUILD_DIR}/packages -outfile review -srcdir ${TRAVIS_BUILD_DIR}/review -srcfiles "review.jar" -srcfiles "review" -srcfiles "review.bat" -srcfiles "review.exe" -srcfiles "COPYING" -appclass de.retest.gui.ReTestGui -name "review" -title "review"
-    ${TRAVIS_BUILD_DIR}/zulufx/bin/javapackager -deploy -native rpm -Bicon=${TRAVIS_BUILD_DIR}/${ICON} -Bruntime=${TRAVIS_BUILD_DIR}/runtime -BshortcutHint=true -Bvendor="ReTest GmbH" -Bcategory="Development" -Bcopyright="ReTest GmbH" -Bemail="ops@retest.de" -BjvmOptions="-XX:+HeapDumpOnOutOfMemoryError" -BjvmOptions="-XX:-OmitStackTraceInFastThrow" -BappVersion="1.0.0" -BlicenseType=Proprietary -BlicenseFile=COPYING -outdir ${TRAVIS_BUILD_DIR}/packages -outfile review -srcdir ${TRAVIS_BUILD_DIR}/review -srcfiles "review.jar" -srcfiles "review" -srcfiles "review.bat" -srcfiles "review.exe" -srcfiles "COPYING" -appclass de.retest.gui.ReTestGui -name "review" -title "review"
+
+    ${TRAVIS_BUILD_DIR}/jdk-14/bin/jpackage --type deb --verbose -d ${TRAVIS_BUILD_DIR}/packages -i ${TRAVIS_BUILD_DIR}/review -n review --main-class de.retest.gui.ReTestGui --main-jar review.jar --icon ${TRAVIS_BUILD_DIR}/${ICON} --runtime-image ${TRAVIS_BUILD_DIR}/runtime --vendor "ReTest GmbH" --copyright "ReTest GmbH" --app-version "${VERSION}" --linux-package-name "review"
+
+    ls ${TRAVIS_BUILD_DIR}/packages
+
+    rclone copy ${TRAVIS_BUILD_DIR}/packages/review_1.0.0-1_amd64.deb ${BUCKET}/releases/review/bundles/${TRAVIS_BUILD_NUMBER}
 fi
 
 ## OSX stuff
 if [[ $TRAVIS_OS_NAME == 'osx' ]]; then
-    echo "Building Mac bundles ..."
-
     VERSION=1.0.0
     ICON=favicon.icns
     ICON_URL=https://assets.retest.org/assets/images/${ICON}
 
+    BUCKET='DO:retest'
+
+    echo "Downloading build dependencies ..."
     curl --location ${ICON_URL} --output ${TRAVIS_BUILD_DIR}/${ICON}
 
-    ${TRAVIS_BUILD_DIR}/zulufx/bin/javapackager -deploy -native app -Bicon=${TRAVIS_BUILD_DIR}/${ICON} -Bruntime=${TRAVIS_BUILD_DIR}/runtime -BshortcutHint=true -Bvendor="ReTest GmbH" -Bcategory="Development" -Bcopyright="ReTest GmbH" -Bemail="ops@retest.de" -BjvmOptions="-XX:+HeapDumpOnOutOfMemoryError" -BjvmOptions="-XX:-OmitStackTraceInFastThrow" -BappVersion="${VERSION}" -BlicenseType=Proprietary -outdir ${TRAVIS_BUILD_DIR}/packages -outfile review -srcdir ${TRAVIS_BUILD_DIR}/review -srcfiles "review.jar" -srcfiles "review" -srcfiles "review.bat" -srcfiles "review.exe" -appclass de.retest.gui.ReTestGui -name "review" -title "review"
-    ${TRAVIS_BUILD_DIR}/zulufx/bin/javapackager -deploy -native dmg -Bicon=${TRAVIS_BUILD_DIR}/${ICON} -Bruntime=${TRAVIS_BUILD_DIR}/runtime -BshortcutHint=true -Bvendor="ReTest GmbH" -Bcategory="Development" -Bcopyright="ReTest GmbH" -Bemail="ops@retest.de" -BjvmOptions="-XX:+HeapDumpOnOutOfMemoryError" -BjvmOptions="-XX:-OmitStackTraceInFastThrow" -BappVersion="${VERSION}" -BlicenseType=Proprietary -outdir ${TRAVIS_BUILD_DIR}/packages -outfile review -srcdir ${TRAVIS_BUILD_DIR}/review -srcfiles "review.jar" -srcfiles "review" -srcfiles "review.bat" -srcfiles "review.exe" -appclass de.retest.gui.ReTestGui -name "review" -title "review"
+    echo "Building macOS bundles ..."
+
+    ${TRAVIS_BUILD_DIR}/jdk-14.jdk/Contents/Home/bin/jpackage --type app-image --verbose -d ${TRAVIS_BUILD_DIR}/packages -i ${TRAVIS_BUILD_DIR}/review -n review --main-class de.retest.gui.ReTestGui --main-jar review.jar --icon ${TRAVIS_BUILD_DIR}/favicon.icns --runtime-image ${TRAVIS_BUILD_DIR}/runtime --vendor "ReTest GmbH" --copyright "ReTest GmbH" --app-version "${VERSION}" --mac-package-name "review"
+
+    /usr/libexec/PlistBuddy -c "add :CFBundleURLTypes array" -c "add :CFBundleURLTypes:0 dict" -c "add :CFBundleURLTypes:0:CFBundleURLSchemes array" -c "add :CFBundleURLTypes:0:CFBundleURLSchemes:0 string review" -c "add :CFBundleURLTypes:0:CFBundleURLName string " ${TRAVIS_BUILD_DIR}/packages/review.app/Contents/Info.plist
+
+    cd ${TRAVIS_BUILD_DIR}/packages
+    zip -r -q review.zip review.app
+
+    rclone copy ${TRAVIS_BUILD_DIR}/packages/review.zip ${BUCKET}/releases/review/bundles/${TRAVIS_BUILD_NUMBER}
+
+    find ${TRAVIS_BUILD_DIR}/packages
 fi
 
 ## Windows stuff
