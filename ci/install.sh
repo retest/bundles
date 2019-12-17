@@ -1,6 +1,6 @@
 #!/bin/bash
 
-RCLONE_VERSION="v1.47.0"
+RCLONE_VERSION="v1.49.5"
 RCLONE_BASE_URL="https://downloads.rclone.org/${RCLONE_VERSION}"
 
 RUNTIME_BUILD=7
