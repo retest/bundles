@@ -8,7 +8,7 @@ set -o pipefail
 if [[ $TRAVIS_OS_NAME == 'linux' ]]; then
     VERSION=1.0.0
     ICON=favicon-96x96.png
-    ICON_URL=https://assets.retest.org/assets/images/${ICON}
+    ICON_URL=https://assets.retest.org/retest/ci/favicons/${ICON}
 
     BUCKET='DO:retest'
 
@@ -23,7 +23,7 @@ fi
 if [[ $TRAVIS_OS_NAME == 'osx' ]]; then
     VERSION=1.0.0
     ICON=favicon.icns
-    ICON_URL=https://assets.retest.org/assets/images/${ICON}
+    ICON_URL=https://assets.retest.org/retest/ci/favicons/${ICON}
 
     BUCKET='DO:retest'
 
