@@ -9,22 +9,14 @@ BUCKET='DO:retest'
 ## Linux stuff
 if [[ $TRAVIS_OS_NAME == 'linux' ]]; then
     echo "Deploying Linux bundles ..."
-
-    # rclone copy ${SOURCE_PATH} ${BUCKET}/${TRAVIS_REPO_SLUG}/${TRAVIS_BUILD_NUMBER}/${TARGET_PATH}
+    rclone copy ${TRAVIS_BUILD_DIR}/packages/review_1.0.0-1_amd64.deb ${BUCKET}/releases/review/bundles/${TRAVIS_BUILD_NUMBER}
 fi
 
 ## OSX stuff
 if [[ $TRAVIS_OS_NAME == 'osx' ]]; then
     echo "Deploying Mac bundles ..."
-
-    echo ${TRAVIS_BUILD_DIR}
-    echo ${TRAVIS_BUILD_NUMBER}
-    
-    rclone copy ${TRAVIS_BUILD_DIR}/packages/bundles ${BUCKET}/releases/review/bundles/${TRAVIS_BUILD_NUMBER}
-    # rclone copy /Users/travis/build/retest/bundles/packages/bundles/review-1.0.0.dmg ${BUCKET}/releases/review/bundles/${TRAVIS_BUILD_NUMBER}/
-
+    rclone copy ${TRAVIS_BUILD_DIR}/packages/review.zip ${BUCKET}/releases/review/bundles/${TRAVIS_BUILD_NUMBER}
     find ${TRAVIS_BUILD_DIR}/packages
-
 fi
 
 ## Windows stuff
