@@ -30,7 +30,7 @@ if [[ $TRAVIS_OS_NAME == 'osx' ]]; then
     ${TRAVIS_BUILD_DIR}/jdk-14.jdk/Contents/Home/bin/jpackage --type app-image --verbose -d ${TRAVIS_BUILD_DIR}/packages -i ${TRAVIS_BUILD_DIR}/review -n review --main-class de.retest.gui.ReTestGui --main-jar review.jar --icon ${TRAVIS_BUILD_DIR}/favicon.icns --runtime-image ${TRAVIS_BUILD_DIR}/runtime --vendor "ReTest GmbH" --copyright "ReTest GmbH" --app-version "${VERSION}" --mac-package-name "review"
 
     echo "Adjust Info.plist to open review with browser link ..."
-    /usr/libexec/PlistBuddy -c "add :CFBundleURLTypes array" -c "add :CFBundleURLTypes:0 dict" -c "add :CFBundleURLTypes:0:CFBundleURLSchemes array" -c "add :CFBundleURLTypes:0:CFBundleURLSchemes:0 string review" -c "add :CFBundleURLTypes:0:CFBundleURLName string " ${TRAVIS_BUILD_DIR}/packages/review.app/Contents/Info.plist
+    /usr/libexec/PlistBuddy -c "add :CFBundleURLTypes array" -c "add :CFBundleURLTypes:0 dict" -c "add :CFBundleURLTypes:0:CFBundleURLSchemes array" -c "add :CFBundleURLTypes:0:CFBundleURLSchemes:0 string retest" -c "add :CFBundleURLTypes:0:CFBundleURLName string " ${TRAVIS_BUILD_DIR}/packages/review.app/Contents/Info.plist
 
     cd ${TRAVIS_BUILD_DIR}/packages
     zip -r -q review.zip review.app
